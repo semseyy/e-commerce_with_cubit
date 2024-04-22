@@ -1,4 +1,4 @@
-import 'package:ecommerce_with_cubit/feature/home/view/home_view.dart';
+import 'package:ecommerce_with_cubit/product/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,15 +18,14 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) {
-        return MaterialApp(
+        return MaterialApp.router(
           debugShowCheckedModeBanner: false,
-          home: child,
+          routerConfig: router,
           theme: ThemeData(
             textTheme: GoogleFonts.outfitTextTheme(Theme.of(context).textTheme),
           ),
         );
       },
-      child: const HomeView(),
     );
   }
 }
