@@ -1,9 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 class subtitle extends StatelessWidget {
   const subtitle({
     super.key,
     required List<String> subtitles,
     required int currentSubtitleIndex,
-  }) : _subtitles = subtitles, _currentSubtitleIndex = currentSubtitleIndex;
+  })  : _subtitles = subtitles,
+        _currentSubtitleIndex = currentSubtitleIndex;
 
   final List<String> _subtitles;
   final int _currentSubtitleIndex;

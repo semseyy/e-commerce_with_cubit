@@ -10,16 +10,18 @@ class ProductDetailPage extends StatefulWidget {
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
   String selectedSize = ''; // Seçili bedenin durumunu tutmak için bir değişken
+  Color buttonColor = Colors.black;
+  IconData iconData = Icons.favorite_border;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 236, 236, 236),
       body: SafeArea(
         child: Stack(
           children: [
-            Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.w),
+            SingleChildScrollView(
+              child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -35,26 +37,29 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       height: 400.h,
                     ),
                     SizedBox(height: 16.h),
-                    Row(
-                      children: [
-                        Text(
-                          "Satıcı Adı",
-                          style: TextStyle(fontSize: 20.sp, color: Colors.blue),
-                        ),
-                        SizedBox(width: 16.w),
-                        Text(
-                          "Ürün Adı",
-                          style: TextStyle(fontSize: 20.sp, color: Colors.grey.shade600),
-                        ),
-                      ],
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.w),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Satıcı Adı",
+                            style: TextStyle(fontSize: 20.sp, color: Colors.blue),
+                          ),
+                          SizedBox(width: 16.w),
+                          Text(
+                            "Ürün Adı",
+                            style: TextStyle(fontSize: 20.sp, color: Colors.black38),
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(height: 8.h),
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
+                        border: Border.all(color: Colors.grey.shade400),
                       ),
                       height: 180.h,
-                      width: 395.w,
+                      width: double.infinity,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -70,7 +75,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                       style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
                                     ),
                                     const SizedBox(width: 10),
-                                    Icon(Icons.error, size: 20.sp),
+                                    Icon(Icons.error_outline, size: 20.sp, color: Colors.grey.shade400),
                                   ],
                                 ),
                                 const Text("15 Farklı Renk"),
@@ -111,7 +116,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         border: Border.all(color: Colors.black),
                       ),
                       height: 100.h,
-                      width: 395.w,
+                      width: double.infinity,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -159,21 +164,22 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ),
                     ),
                     SizedBox(height: 8.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    Stack(
                       children: [
                         Container(
-                          width: 395.w, // Container genişliğini artırıyoruz
-                          color: Colors.grey.shade600,
+                          width: double.infinity,
+                          color: Colors.white,
                           padding: EdgeInsets.symmetric(vertical: 8.h),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              SizedBox(width: 10.w),
                               Text(
                                 "295.99",
-                                style: TextStyle(fontSize: 18.sp, color: Colors.white),
+                                style: TextStyle(fontSize: 18.sp, color: Colors.black),
                                 textAlign: TextAlign.center,
                               ),
+                              Spacer(),
                               ElevatedButton(
                                 onPressed: () {},
                                 style: const ButtonStyle(
@@ -185,6 +191,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                   style: TextStyle(color: Colors.orange),
                                 ),
                               ),
+                              SizedBox(width: 10.w),
                               ElevatedButton(
                                 onPressed: () {},
                                 style: const ButtonStyle(
@@ -193,6 +200,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                 ),
                                 child: const Text('Satın Al'),
                               ),
+                              SizedBox(width: 10.w),
                             ],
                           ),
                         ),
@@ -205,11 +213,23 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             Positioned(
               top: 20,
               right: 20,
-              child: IconButton(
-                onPressed: () {
-                  // Favoriler butonuna basıldığında yapılacak işlemler
-                },
-                icon: Icon(Icons.favorite_border), // Favoriler butonu
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      if (buttonColor == Colors.black) {
+                        buttonColor = Colors.orange;
+                        iconData = Icons.favorite;
+                      } else {
+                        buttonColor = Colors.black;
+                        iconData = Icons.favorite_border;
+                      }
+                    });
+                  },
+                  icon: Icon(iconData),
+                  color: buttonColor,
+                ),
               ),
             ),
           ],

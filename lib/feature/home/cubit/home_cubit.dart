@@ -1,8 +1,8 @@
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
-
-part 'home_state.dart';
+import 'package:ecommerce_with_cubit/feature/home/cubit/home_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(HomeInitial());
+  HomeCubit(super.initialState);
+
+  void addFavorite() {}
 }
