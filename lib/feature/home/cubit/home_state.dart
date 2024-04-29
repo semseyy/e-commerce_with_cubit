@@ -13,12 +13,14 @@ class HomeState extends Equatable {
   final int activeIndex;
   final Color buttonColor;
   final IconData iconData;
+  final String selectedSize;
 
   const HomeState({
     required this.states,
     required this.activeIndex,
     required this.buttonColor,
     required this.iconData,
+    required this.selectedSize,
   });
 
   @override
@@ -28,6 +30,7 @@ class HomeState extends Equatable {
         activeIndex,
         buttonColor,
         iconData,
+        selectedSize,
       ];
 
   factory HomeState.initial() => const HomeState(
@@ -35,6 +38,7 @@ class HomeState extends Equatable {
         activeIndex: 0,
         buttonColor: Colors.black,
         iconData: Icons.favorite_border,
+        selectedSize: "",
       );
 
   HomeState copyWith({
@@ -42,12 +46,14 @@ class HomeState extends Equatable {
     int? activeIndex,
     Color? buttonColor,
     IconData? iconData,
+    String? selectedSize,
   }) {
     return HomeState(
       states: states ?? this.states,
       activeIndex: activeIndex ?? this.activeIndex,
       buttonColor: buttonColor ?? this.buttonColor,
       iconData: iconData ?? this.iconData,
+      selectedSize: selectedSize ?? this.selectedSize,
     );
   }
 }
