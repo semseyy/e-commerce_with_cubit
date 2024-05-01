@@ -5,38 +5,40 @@ class FakeStoreService {
   final Dio _dio = Dio();
   final String _baseUrl = 'https://fakestoreapi.com';
 
-  // Tüm ürünleri getiren metod
-  Future<List<Product>?> getProducts() async {
+  /// Fetches all products from the API.
+  Future<List<Product>> getProducts() async {
     try {
       Response response = await _dio.get('$_baseUrl/products');
       List<dynamic> data = response.data;
       List<Product> products = data.map((json) => Product.fromJson(json)).toList();
       return products;
     } catch (e) {
-      print("Exception occured: $e");
-      return null;
+      print("Exception occurred: $e");
+      throw e; // Rethrow the exception or handle it appropriately
     }
   }
 
-  // ID'si verilen ürünü getiren metod
-  Future<Map<String, dynamic>?> getProductById(int productId) async {
+  /// Fetches a product by its ID from the API.
+  Future<Product> getProductById(int productId) async {
     try {
       Response response = await _dio.get('$_baseUrl/products/$productId');
-      return response.data;
+      return Product.fromJson(response.data);
     } catch (e) {
-      print("Exception occured: $e");
-      return null;
+      print("Exception occurred: $e");
+      throw e; //
     }
   }
 
-  // Kategoriye göre ürünleri getiren metod
-  Future<List<dynamic>?> getProductsByCategory(String category) async {
+  /// Fetches products by category from the API.
+  Future<List<Product>> getProductsByCategory(String category) async {
     try {
       Response response = await _dio.get('$_baseUrl/products/category/$category');
-      return response.data;
+      List<dynamic> data = response.data;
+      List<Product> products = data.map((json) => Product.fromJson(json)).toList();
+      return products;
     } catch (e) {
-      print("Exception occured: $e");
-      return null;
+      print("Exception occurred: $e");
+      throw e; // Rethrow the exception or handle it appropriately
     }
   }
 }

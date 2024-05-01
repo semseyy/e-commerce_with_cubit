@@ -4,7 +4,7 @@ class Product {
   final String description;
   final double price;
   final String category;
-  final String image;
+  final String imageUrl;
 
   Product({
     required this.id,
@@ -12,17 +12,17 @@ class Product {
     required this.description,
     required this.price,
     required this.category,
-    required this.image,
+    required this.imageUrl,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-      id: json['id'],
-      name: json['name'],
-      description: json['description'],
-      price: json['price'],
-      category: json['category'],
-      image: json['image'],
+      id: json['id'] ?? 0,
+      name: json['title'] ?? "", // API'de isim alanı 'title' olarak adlandırılmış olabilir
+      description: json['description'] ?? "",
+      price: json['price'] != null ? double.parse(json['price'].toString()) : 0.0,
+      category: json['category'] ?? "",
+      imageUrl: json['image'] ?? "", // Resim URL'si olarak gelmesi bekleniyor
     );
   }
 }

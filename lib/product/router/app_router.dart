@@ -10,7 +10,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const HomeView();
+        return BlocProvider(
+          create: (context) => HomeCubit(),
+          child: const HomeView(),
+        );
       },
       routes: <RouteBase>[
         GoRoute(
