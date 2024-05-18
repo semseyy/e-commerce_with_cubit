@@ -22,18 +22,13 @@ class CategoryWidget extends StatelessWidget {
         (index) => GestureDetector(
           onTap: () {
             if (onCategorySelected != null) {
-              if (selectedIndex == index) {
-                // If the tapped category is already selected, deselect it
-                onCategorySelected!(-1); // Deselect the category
-              } else {
-                onCategorySelected!(index); // Select the tapped category
-              }
+              onCategorySelected!(index);
             }
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+            padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 8.h),
             decoration: BoxDecoration(
-              color: selectedIndex == index ? Colors.orange : Colors.grey[200],
+              color: selectedIndex == index ? Colors.teal : Colors.grey[200],
               borderRadius: BorderRadius.circular(20.0.r),
             ),
             child: Text(

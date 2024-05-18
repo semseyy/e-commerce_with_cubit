@@ -26,7 +26,7 @@ class SizeOption extends StatelessWidget {
             height: 40.h,
             decoration: BoxDecoration(
               border: Border.all(
-                color: state.selectedSize == size ? Colors.orange : Colors.black,
+                color: state.selectedSize == size ? Colors.teal : Colors.black,
               ),
               borderRadius: BorderRadius.circular(8.r),
             ),
@@ -34,7 +34,7 @@ class SizeOption extends StatelessWidget {
               child: Text(
                 size,
                 style: TextStyle(
-                  color: state.selectedSize == size ? Colors.orange : Colors.black,
+                  color: state.selectedSize == size ? Colors.teal : Colors.black,
                   fontSize: 20.sp,
                 ),
               ),

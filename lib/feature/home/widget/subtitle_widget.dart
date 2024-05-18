@@ -16,7 +16,7 @@ class subtitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      color: Colors.grey.shade600,
+      color: Colors.teal,
       padding: EdgeInsets.symmetric(vertical: 8.h),
       child: Text(
         _subtitles[_currentSubtitleIndex],

@@ -4,6 +4,7 @@ import 'package:ecommerce_with_cubit/product/widget/size_option_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductDetailPage extends StatelessWidget {
   const ProductDetailPage({Key? key}) : super(key: key);
@@ -12,6 +13,8 @@ class ProductDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
+        final product = state.selectedProduct;
+
         return Scaffold(
           backgroundColor: const Color.fromARGB(255, 236, 236, 236),
           body: SafeArea(
@@ -24,9 +27,9 @@ class ProductDetailPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: NetworkImage("https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg"),
+                              image: NetworkImage(product?.imageUrl ?? ""),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -50,7 +53,7 @@ class ProductDetailPage extends StatelessWidget {
                                     child: SizedBox(width: 6.w),
                                   ),
                                   TextSpan(
-                                    text: "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
+                                    text: product?.name ?? "",
                                     style: TextStyle(
                                       fontSize: 16.sp,
                                       color: Colors.black,
@@ -125,10 +128,9 @@ class ProductDetailPage extends StatelessWidget {
                         SizedBox(height: 10.h),
                         Text.rich(
                           TextSpan(
-                            text:
-                                "great outerwear jackets for Spring/Autumn/Winter, suitable for many occasions, such as working, hiking, camping, mountain/rock climbing, cycling, traveling or other outdoors. Good gift choice for you or your family member. A warm hearted love to Father, husband or son in this thanksgiving or Christmas Day.",
+                            text: product?.description ?? "",
                             style: TextStyle(
-                              fontSize: 16.sp,
+                              fontSize: 14.sp,
                               color: Colors.black,
                             ),
                           ),
@@ -141,12 +143,14 @@ class ProductDetailPage extends StatelessWidget {
                           child: Row(
                             children: [
                               Text(
-                                "295.99",
+                                product?.price.toString() ?? "",
                                 style: TextStyle(fontSize: 18.sp, color: Colors.black),
                               ),
                               const Spacer(),
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  context.read<HomeCubit>().setAddCart(product!);
+                                },
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(Colors.white),
                                   padding:
@@ -154,14 +158,16 @@ class ProductDetailPage extends StatelessWidget {
                                 ),
                                 child: const Text(
                                   'Sepete Ekle',
-                                  style: TextStyle(color: Colors.orange),
+                                  style: TextStyle(color: Colors.teal),
                                 ),
                               ),
                               SizedBox(width: 10.w),
                               ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  context.push("/checkout", extra: context.read<HomeCubit>());
+                                },
                                 style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(Colors.orange),
+                                  backgroundColor: MaterialStateProperty.all(Colors.teal),
                                   padding:
                                       MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h)),
                                 ),

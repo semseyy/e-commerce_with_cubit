@@ -1,14 +1,11 @@
-import 'package:carousel_slider/carousel_controller.dart';
-import 'package:ecommerce_with_cubit/feature/home/service/home_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:ecommerce_with_cubit/feature/home/cubit/home_cubit.dart';
 import 'package:ecommerce_with_cubit/feature/home/cubit/home_state.dart';
-import 'package:ecommerce_with_cubit/feature/home/model/home_model.dart';
 import 'package:ecommerce_with_cubit/feature/home/widget/carousel_slider_widget.dart';
 import 'package:ecommerce_with_cubit/feature/home/widget/category_widget.dart';
 import 'package:ecommerce_with_cubit/feature/home/widget/product_widget.dart';
@@ -22,7 +19,6 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final CarouselController _carouselController = CarouselController();
   final List<String> urlImages = [
     "https://hips.hearstapps.com/hmg-prod/images/2024-audi-rs7-performance-motion-front-2-1669663936.jpg?crop=0.673xw:0.757xh;0.287xw,0.226xh&resize=768:*",
     "https://hips.hearstapps.com/hmg-prod/images/img-1484-jpg-649644d3c1386.jpg?crop=0.571xw:0.762xh;0.240xw,0.195xh&resize=640:*",
@@ -34,13 +30,16 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'İCEMİLLA',
-              style: GoogleFonts.pacifico(
-                fontSize: 30.sp,
-                color: Colors.black,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+              child: Text(
+                'İCEMİLLA',
+                style: GoogleFonts.pacifico(
+                  fontSize: 30.sp,
+                  color: Colors.black,
+                ),
               ),
             ),
             Padding(
@@ -56,7 +55,11 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
             SizedBox(height: 20.h),
-            ImageCarouselSlider(images: urlImages),
+            BlocBuilder<HomeCubit, HomeState>(
+              builder: (context, state) {
+                return ImageCarouselSlider(images: urlImages);
+              },
+            ),
             SizedBox(height: 16.h),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w),
@@ -66,7 +69,13 @@ class _HomeViewState extends State<HomeView> {
                     categories: state.categories,
                     selectedIndex: state.selectedCategoryIndex,
                     onCategorySelected: (index) {
-                      context.read<HomeCubit>().setSelectedCategoryIndex(index);
+                      if (index == state.selectedCategoryIndex) {
+                        // Clear selection if the same category is tapped again
+                        context.read<HomeCubit>().setSelectedCategoryIndex(-1);
+                      } else {
+                        final selectedCategory = index != -1 ? state.categories[index] : "Tüm Kategoriler";
+                        context.read<HomeCubit>().fetchProductsByCategory(selectedCategory);
+                      }
                     },
                   );
                 },
@@ -74,16 +83,15 @@ class _HomeViewState extends State<HomeView> {
             ),
             SizedBox(height: 8.h),
             Expanded(
-              child: FutureBuilder<List<Product>>(
-                future: FakeStoreService().getProducts(), // Fetch products from API
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+              child: BlocBuilder<HomeCubit, HomeState>(
+                builder: (context, state) {
+                  final products = state.products;
+                  if (products.isEmpty) {
                     return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (snapshot.hasData) {
-                    // Products fetched successfully
-                    final products = snapshot.data!;
+                  } else {
+                    final filteredProducts = state.selectedCategoryIndex != -1
+                        ? state.products.where((product) => product.category == state.selectedCategoryIndex).toList()
+                        : state.products;
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.w),
                       child: GridView.builder(
@@ -93,21 +101,21 @@ class _HomeViewState extends State<HomeView> {
                           mainAxisSpacing: 8.0,
                           childAspectRatio: 0.80,
                         ),
-                        itemCount: products.length,
+                        itemCount: filteredProducts.length,
                         itemBuilder: (context, index) {
-                          final product = products[index];
+                          final product = filteredProducts[index];
                           return ProductItem(
                             productName: product.name,
                             productImage: NetworkImage(product.imageUrl),
+                            productId: product.id,
                             onTap: () {
-                              context.go('/product_detail');
+                              context.read<HomeCubit>().setSelectedProduct(product);
+                              context.push('/product_detail', extra: context.read<HomeCubit>());
                             },
                           );
                         },
                       ),
                     );
-                  } else {
-                    return Center(child: Text('No data available'));
                   }
                 },
               ),

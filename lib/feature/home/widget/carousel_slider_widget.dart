@@ -63,7 +63,7 @@ class _ImageCarouselSliderState extends State<ImageCarouselSlider> {
         effect: ExpandingDotsEffect(
           dotHeight: 10.h,
           dotWidth: 10.w,
-          activeDotColor: Colors.orange,
+          activeDotColor: Colors.teal,
         ),
       );
 
