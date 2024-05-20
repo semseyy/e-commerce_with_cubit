@@ -1,3 +1,4 @@
+import 'package:ecommerce_with_cubit/product/consdant/color_consdant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -11,39 +12,48 @@ import 'package:ecommerce_with_cubit/feature/home/widget/category_widget.dart';
 import 'package:ecommerce_with_cubit/feature/home/widget/product_widget.dart';
 import 'package:ecommerce_with_cubit/feature/home/widget/subtitle_widget.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
-
-  @override
-  State<HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-  final List<String> urlImages = [
-    "https://hips.hearstapps.com/hmg-prod/images/2024-audi-rs7-performance-motion-front-2-1669663936.jpg?crop=0.673xw:0.757xh;0.287xw,0.226xh&resize=768:*",
-    "https://hips.hearstapps.com/hmg-prod/images/img-1484-jpg-649644d3c1386.jpg?crop=0.571xw:0.762xh;0.240xw,0.195xh&resize=640:*",
-    "https://www.cnet.com/a/img/resize/e8c8dd2963e629687fbcfe8d68ce37804114da62/hub/2020/11/06/fe337281-ae20-4ad4-997b-95c2937b9258/ogi1-2021-audi-rs7-008.jpg?auto=webp&fit=crop&height=675&width=1200"
-  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+            CircleAvatar(
+              maxRadius: 26,
+              backgroundColor: navyColor,
+              child: Image.asset(
+                'assets/images/Logo.png',
+                width: 35.w,
+                height: 35.h,
+              ),
+            ),
+            SizedBox(width: 10.w),
+            Flexible(
               child: Text(
                 'İCEMİLLA',
                 style: GoogleFonts.pacifico(
-                  fontSize: 30.sp,
-                  color: Colors.black,
+                  fontSize: 22.sp,
+                  color: blackColor,
                 ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
+          ],
+        ),
+      ),
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
               child: TextField(
                 decoration: InputDecoration(
                   hintText: 'Ara...',
@@ -54,40 +64,42 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: 8.h),
             BlocBuilder<HomeCubit, HomeState>(
               builder: (context, state) {
-                return ImageCarouselSlider(images: urlImages);
+                return ImageCarouselSlider(images: state.productImages);
               },
             ),
-            SizedBox(height: 16.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.w),
-              child: BlocBuilder<HomeCubit, HomeState>(
-                builder: (context, state) {
-                  return CategoryWidget(
-                    categories: state.categories,
-                    selectedIndex: state.selectedCategoryIndex,
-                    onCategorySelected: (index) {
-                      if (index == state.selectedCategoryIndex) {
-                        // Clear selection if the same category is tapped again
-                        context.read<HomeCubit>().setSelectedCategoryIndex(-1);
-                      } else {
-                        final selectedCategory = index != -1 ? state.categories[index] : "Tüm Kategoriler";
-                        context.read<HomeCubit>().fetchProductsByCategory(selectedCategory);
-                      }
-                    },
-                  );
-                },
-              ),
+            SizedBox(height: 12.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                BlocBuilder<HomeCubit, HomeState>(
+                  builder: (context, state) {
+                    return CategoryWidget(
+                      categories: state.categories,
+                      selectedIndex: state.selectedCategoryIndex,
+                      onCategorySelected: (index) {
+                        if (index == state.selectedCategoryIndex) {
+                          // Clear selection if the same category is tapped again
+                          context.read<HomeCubit>().setSelectedCategoryIndex(-1);
+                        } else {
+                          final selectedCategory = index != -1 ? state.categories[index] : "Tüm Kategoriler";
+                          context.read<HomeCubit>().fetchProductsByCategory(selectedCategory);
+                        }
+                      },
+                    );
+                  },
+                ),
+              ],
             ),
-            SizedBox(height: 8.h),
+            SizedBox(height: 12.h),
             Expanded(
               child: BlocBuilder<HomeCubit, HomeState>(
                 builder: (context, state) {
                   final products = state.products;
                   if (products.isEmpty) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else {
                     final filteredProducts = state.selectedCategoryIndex != -1
                         ? state.products.where((product) => product.category == state.selectedCategoryIndex).toList()

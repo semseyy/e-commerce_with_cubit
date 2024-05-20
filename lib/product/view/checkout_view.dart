@@ -1,4 +1,5 @@
 import 'package:ecommerce_with_cubit/feature/home/cubit/home_state.dart';
+import 'package:ecommerce_with_cubit/product/consdant/color_consdant.dart';
 import 'package:ecommerce_with_cubit/product/widget/cart_item.dart';
 import 'package:ecommerce_with_cubit/product/widget/total_amount_section.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +13,8 @@ class CheckoutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sepet', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.teal,
+        title: Text('Sepet', style: TextStyle(color: whiteColor)),
+        backgroundColor: tealColor,
         elevation: 0,
       ),
       body: BlocBuilder<HomeCubit, HomeState>(
@@ -35,8 +36,7 @@ class CheckoutPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
-            // Sepet toplamı
+          children: const [
             TotalAmountSection(),
           ],
         ),

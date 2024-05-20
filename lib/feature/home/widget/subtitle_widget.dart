@@ -1,3 +1,4 @@
+import 'package:ecommerce_with_cubit/product/consdant/color_consdant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -16,11 +17,11 @@ class subtitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      color: Colors.teal,
+      color: tealColor,
       padding: EdgeInsets.symmetric(vertical: 8.h),
       child: Text(
         _subtitles[_currentSubtitleIndex],
-        style: TextStyle(fontSize: 18.sp, color: Colors.white),
+        style: TextStyle(fontSize: 18.sp, color: whiteColor),
         textAlign: TextAlign.center,
       ),
     );

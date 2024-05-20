@@ -1,9 +1,6 @@
+import 'package:ecommerce_with_cubit/product/consdant/color_consdant.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-
-import '../cubit/home_cubit.dart';
 
 class ProductItem extends StatelessWidget {
   final String productName;
@@ -27,7 +24,7 @@ class ProductItem extends StatelessWidget {
         title: Text(
           productName,
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 16),
+          style: TextStyle(fontSize: 16.sp),
         ),
       ),
       child: GestureDetector(
@@ -37,7 +34,7 @@ class ProductItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(15.r),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.3),
+                color: blackColor.withOpacity(0.3),
                 spreadRadius: 1,
                 blurRadius: 4,
                 offset: const Offset(0, 3),

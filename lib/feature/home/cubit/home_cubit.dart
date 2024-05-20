@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:ecommerce_with_cubit/product/consdant/color_consdant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,7 +30,7 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       final List<Product> products = await FakeStoreService().getProducts();
       final List<String> productImages =
-          products.map((product) => product.imageUrl).toList().sublist(0, 3); // Sadece ilk üç ürün resmini al
+          products.map((product) => product.imageUrl).toList().sublist(1, 4); // Sadece ilk üç ürün resmini al
       emit(state.copyWith(
           products: products,
           productImages: productImages,
@@ -67,9 +68,9 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void addFavorite() async {
-    final bool isFavorite = state.buttonColor == Colors.black;
+    final bool isFavorite = state.buttonColor == blackColor;
     final IconData iconData = isFavorite ? Icons.favorite : Icons.favorite_border;
-    final Color buttonColor = isFavorite ? Colors.teal : Colors.black;
+    final Color buttonColor = isFavorite ? tealColor : blackColor;
     emit(state.copyWith(buttonColor: buttonColor, iconData: iconData));
     await _saveFavoriteStatus(isFavorite);
   }
@@ -88,7 +89,7 @@ class HomeCubit extends Cubit<HomeState> {
     final bool? isFavorite = prefs.getBool("_favoriteKey");
     if (isFavorite != null) {
       final IconData iconData = isFavorite ? Icons.favorite : Icons.favorite_border;
-      final Color buttonColor = isFavorite ? Colors.teal : Colors.black;
+      final Color buttonColor = isFavorite ? tealColor : blackColor;
       emit(state.copyWith(buttonColor: buttonColor, iconData: iconData));
     }
   }
@@ -117,6 +118,27 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void setAddCart(Product product) {
+    // Sepette aynı üründen var mı kontrol et
+    final existingIndex = state.cartItems.indexWhere((item) => item.id == product.id);
+
+    if (existingIndex != -1) {
+      // Sepette aynı ürün varsa, ürün miktarını arttır
+      final updatedCart = List<Product>.from(state.cartItems);
+      updatedCart[existingIndex].quantity++; // Ürün miktarını artır
+      emit(state.copyWith(cartItems: updatedCart));
+    } else {
+      // Sepette aynı ürün yoksa, yeni ürünü sepete ekle
+      final updatedCart = List<Product>.from(state.cartItems)..add(product);
+      emit(state.copyWith(cartItems: updatedCart));
+
+      showSnackBar('Ürün sepete eklendi');
+    }
+
+    // Toplam fiyatı güncelle
+    updateTotalAmount();
+  }
+
+  void setBuyCart(Product product) {
     // Sepette aynı üründen var mı kontrol et
     final existingIndex = state.cartItems.indexWhere((item) => item.id == product.id);
 
@@ -177,5 +199,13 @@ class HomeCubit extends Cubit<HomeState> {
       totalAmount += (product.price ?? 0) * product.quantity;
     });
     emit(state.copyWith(totalAmount: totalAmount));
+  }
+
+  void showSnackBar(String message) {
+    emit(state.copyWith(showSnackBar: true, snackBarMessage: message));
+  }
+
+  void hideSnackBar() {
+    emit(state.copyWith(showSnackBar: false));
   }
 }

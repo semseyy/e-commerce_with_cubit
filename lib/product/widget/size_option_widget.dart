@@ -1,3 +1,4 @@
+import 'package:ecommerce_with_cubit/product/consdant/color_consdant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,7 +27,7 @@ class SizeOption extends StatelessWidget {
             height: 40.h,
             decoration: BoxDecoration(
               border: Border.all(
-                color: state.selectedSize == size ? Colors.teal : Colors.black,
+                color: state.selectedSize == size ? tealColor : blackColor,
               ),
               borderRadius: BorderRadius.circular(8.r),
             ),
@@ -34,7 +35,7 @@ class SizeOption extends StatelessWidget {
               child: Text(
                 size,
                 style: TextStyle(
-                  color: state.selectedSize == size ? Colors.teal : Colors.black,
+                  color: state.selectedSize == size ? tealColor : blackColor,
                   fontSize: 20.sp,
                 ),
               ),

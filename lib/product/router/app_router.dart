@@ -1,5 +1,6 @@
 import 'package:ecommerce_with_cubit/feature/home/cubit/home_cubit.dart';
 import 'package:ecommerce_with_cubit/feature/home/view/home_view.dart';
+import 'package:ecommerce_with_cubit/feature/splash/splash_view.dart';
 import 'package:ecommerce_with_cubit/product/view/checkout_view.dart';
 import 'package:ecommerce_with_cubit/product/view/product_detail_view.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +14,19 @@ final GoRouter router = GoRouter(
       builder: (BuildContext context, GoRouterState state) {
         return BlocProvider(
           create: (context) => HomeCubit(),
-          child: const HomeView(),
+          child: const SplashPage(),
         );
       },
       routes: <RouteBase>[
+        GoRoute(
+          path: 'home',
+          builder: (BuildContext context, GoRouterState state) {
+            return BlocProvider(
+              create: (context) => HomeCubit(),
+              child: const HomeView(),
+            );
+          },
+        ),
         GoRoute(
           path: 'product_detail',
           builder: (BuildContext context, GoRouterState state) {
@@ -35,7 +45,7 @@ final GoRouter router = GoRouter(
               child: const CheckoutPage(),
             );
           },
-        )
+        ),
       ],
     ),
   ],

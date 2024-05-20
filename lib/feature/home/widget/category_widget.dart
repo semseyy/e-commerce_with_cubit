@@ -1,3 +1,4 @@
+import 'package:ecommerce_with_cubit/product/consdant/color_consdant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -17,6 +18,7 @@ class CategoryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       spacing: 8.w, // Horizontal spacing between categories
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: List.generate(
         categories.length,
         (index) => GestureDetector(
@@ -26,15 +28,15 @@ class CategoryWidget extends StatelessWidget {
             }
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 8.h),
+            padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 8.h),
             decoration: BoxDecoration(
-              color: selectedIndex == index ? Colors.teal : Colors.grey[200],
-              borderRadius: BorderRadius.circular(20.0.r),
+              color: selectedIndex == index ? tealColor : Colors.grey[200],
+              borderRadius: BorderRadius.circular(16.r),
             ),
             child: Text(
               categories[index],
               style: TextStyle(
-                color: selectedIndex == index ? Colors.white : Colors.black,
+                color: selectedIndex == index ? whiteColor : blackColor,
                 fontWeight: FontWeight.bold,
               ),
             ),

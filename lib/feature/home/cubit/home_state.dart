@@ -34,6 +34,8 @@ class HomeState extends Equatable {
   final List<String> productImages;
   final List<Product> cartItems;
   final int quantity;
+  final bool showSnackBar;
+  final String snackBarMessage;
 
   const HomeState({
     required this.states,
@@ -60,6 +62,8 @@ class HomeState extends Equatable {
     required this.productImages,
     required this.cartItems,
     required this.quantity,
+    required this.showSnackBar,
+    required this.snackBarMessage,
   });
 
   @override
@@ -88,6 +92,8 @@ class HomeState extends Equatable {
         productImages,
         cartItems,
         quantity,
+        showSnackBar,
+        snackBarMessage,
       ];
 
   factory HomeState.initial() => const HomeState(
@@ -119,6 +125,8 @@ class HomeState extends Equatable {
         productImages: [],
         cartItems: [],
         quantity: 1,
+        showSnackBar: false,
+        snackBarMessage: '',
       );
 
   HomeState copyWith({
@@ -146,6 +154,8 @@ class HomeState extends Equatable {
     List<String>? productImages,
     List<Product>? cartItems,
     int? quantity,
+    bool? showSnackBar,
+    String? snackBarMessage,
   }) {
     return HomeState(
       states: states ?? this.states,
@@ -172,6 +182,8 @@ class HomeState extends Equatable {
       productImages: productImages ?? this.productImages,
       cartItems: cartItems ?? this.cartItems,
       quantity: quantity ?? this.quantity,
+      showSnackBar: showSnackBar ?? this.showSnackBar,
+      snackBarMessage: snackBarMessage ?? this.snackBarMessage,
     );
   }
 }

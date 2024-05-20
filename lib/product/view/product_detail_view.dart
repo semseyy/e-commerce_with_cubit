@@ -1,5 +1,6 @@
 import 'package:ecommerce_with_cubit/feature/home/cubit/home_cubit.dart';
 import 'package:ecommerce_with_cubit/feature/home/cubit/home_state.dart';
+import 'package:ecommerce_with_cubit/product/consdant/color_consdant.dart';
 import 'package:ecommerce_with_cubit/product/widget/size_option_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,9 +15,8 @@ class ProductDetailPage extends StatelessWidget {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         final product = state.selectedProduct;
-
         return Scaffold(
-          backgroundColor: const Color.fromARGB(255, 236, 236, 236),
+          backgroundColor: whiteColor,
           body: SafeArea(
             child: Stack(
               children: [
@@ -30,7 +30,7 @@ class ProductDetailPage extends StatelessWidget {
                           decoration: BoxDecoration(
                             image: DecorationImage(
                               image: NetworkImage(product?.imageUrl ?? ""),
-                              fit: BoxFit.cover,
+                              fit: BoxFit.contain,
                             ),
                           ),
                           width: 400.w,
@@ -45,7 +45,7 @@ class ProductDetailPage extends StatelessWidget {
                                 text: "icemilla ",
                                 style: TextStyle(
                                   fontSize: 20.sp,
-                                  color: Colors.blue,
+                                  color: blueColor,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 children: [
@@ -56,7 +56,7 @@ class ProductDetailPage extends StatelessWidget {
                                     text: product?.name ?? "",
                                     style: TextStyle(
                                       fontSize: 16.sp,
-                                      color: Colors.black,
+                                      color: blackColor,
                                       fontWeight: FontWeight.normal,
                                     ),
                                   ),
@@ -69,17 +69,33 @@ class ProductDetailPage extends StatelessWidget {
                             SizedBox(height: 6.h),
                             Row(
                               children: [
-                                Icon(Icons.star, color: Colors.amber, size: 20.sp),
-                                Icon(Icons.star, color: Colors.amber, size: 20.sp),
-                                Icon(Icons.star, color: Colors.amber, size: 20.sp),
-                                Icon(Icons.star, color: Colors.amber, size: 20.sp),
-                                Icon(Icons.star, color: Colors.amber, size: 20.sp),
+                                ...List.generate(5, (index) {
+                                  if (index < product!.rating!.floor()) {
+                                    return Icon(
+                                      Icons.star,
+                                      color: amberColor,
+                                      size: 20.sp,
+                                    );
+                                  } else if (index < product.rating!.toDouble()) {
+                                    return Icon(
+                                      Icons.star_half,
+                                      color: amberColor,
+                                      size: 20.sp,
+                                    );
+                                  } else {
+                                    return Icon(
+                                      Icons.star_border,
+                                      color: amberColor,
+                                      size: 20.sp,
+                                    );
+                                  }
+                                }),
                                 SizedBox(width: 10.w),
-                                const Text("| (5.0)"),
+                                Text("| ${product!.rating!.toStringAsFixed(1)} "),
                               ],
                             ),
                             SizedBox(height: 6.h),
-                            Divider(height: 1.h, color: Colors.black)
+                            Divider(height: 1.h, color: blackColor)
                           ],
                         ),
                         SizedBox(
@@ -94,11 +110,11 @@ class ProductDetailPage extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
-                                      children: const [
+                                      children: [
                                         Text(
                                           "Beden",
-                                          style:
-                                              TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
+                                          style: TextStyle(
+                                              color: blackColor, fontWeight: FontWeight.bold, fontSize: 16.sp),
                                         ),
                                       ],
                                     ),
@@ -124,50 +140,67 @@ class ProductDetailPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Divider(height: 1.h, color: Colors.black),
+                        Divider(height: 1.h, color: blackColor),
                         SizedBox(height: 10.h),
                         Text.rich(
                           TextSpan(
-                            text: product?.description ?? "",
+                            text: product.description,
                             style: TextStyle(
                               fontSize: 14.sp,
-                              color: Colors.black,
+                              color: blackColor,
                             ),
                           ),
                           textAlign: TextAlign.justify,
                         ),
                         const Spacer(),
                         Container(
-                          color: Colors.white,
+                          color: lightGreyColor,
                           padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 10.w),
                           child: Row(
                             children: [
                               Text(
-                                product?.price.toString() ?? "",
-                                style: TextStyle(fontSize: 18.sp, color: Colors.black),
+                                "\$ ${product.price.toString()}",
+                                style: TextStyle(fontSize: 18.sp, color: blackColor),
                               ),
                               const Spacer(),
-                              ElevatedButton(
-                                onPressed: () {
-                                  context.read<HomeCubit>().setAddCart(product!);
+                              BlocBuilder<HomeCubit, HomeState>(
+                                builder: (context, state) {
+                                  if (state.showSnackBar) {
+                                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text(state.snackBarMessage),
+                                          duration: const Duration(seconds: 1),
+                                          backgroundColor: tealColor,
+                                        ),
+                                      );
+                                      context.read<HomeCubit>().hideSnackBar();
+                                    });
+                                  }
+                                  return ElevatedButton(
+                                    onPressed: () {
+                                      context.read<HomeCubit>().setAddCart(product);
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all(whiteColor),
+                                      padding: MaterialStateProperty.all(
+                                          EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h)),
+                                    ),
+                                    child: Text(
+                                      'Sepete Ekle',
+                                      style: TextStyle(color: tealColor),
+                                    ),
+                                  );
                                 },
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(Colors.white),
-                                  padding:
-                                      MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h)),
-                                ),
-                                child: const Text(
-                                  'Sepete Ekle',
-                                  style: TextStyle(color: Colors.teal),
-                                ),
                               ),
                               SizedBox(width: 10.w),
                               ElevatedButton(
                                 onPressed: () {
+                                  context.read<HomeCubit>().setBuyCart(product);
                                   context.push("/checkout", extra: context.read<HomeCubit>());
                                 },
                                 style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(Colors.teal),
+                                  backgroundColor: MaterialStateProperty.all(tealColor),
                                   padding:
                                       MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h)),
                                 ),
@@ -184,7 +217,7 @@ class ProductDetailPage extends StatelessWidget {
                   top: 20,
                   right: 20,
                   child: CircleAvatar(
-                    backgroundColor: Colors.white,
+                    backgroundColor: lightGreyColor,
                     child: IconButton(
                       icon: Icon(
                         state.iconData,
@@ -200,11 +233,11 @@ class ProductDetailPage extends StatelessWidget {
                   top: 20,
                   left: 20,
                   child: CircleAvatar(
-                    backgroundColor: Colors.white,
+                    backgroundColor: lightGreyColor,
                     child: IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_back_ios_new_rounded,
-                        color: Colors.black,
+                        color: blackColor,
                       ),
                       onPressed: () {
                         Navigator.pop(context);

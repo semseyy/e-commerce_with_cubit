@@ -1,7 +1,9 @@
+import 'package:ecommerce_with_cubit/product/consdant/color_consdant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecommerce_with_cubit/feature/home/cubit/home_cubit.dart';
 import 'package:ecommerce_with_cubit/feature/home/model/home_model.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CartItem extends StatelessWidget {
   final Product product;
@@ -16,9 +18,8 @@ class CartItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeCubit cubit = BlocProvider.of<HomeCubit>(context);
-
     return Card(
-      margin: EdgeInsets.all(10),
+      margin: EdgeInsets.all(10.w),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
@@ -37,24 +38,24 @@ class CartItem extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: 10),
+            SizedBox(width: 10.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     product.name,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: 5.h),
                   Text(
                     '\$${(product.price! * quantity).toStringAsFixed(2)}',
-                    style: TextStyle(fontSize: 16, color: Colors.green),
+                    style: TextStyle(fontSize: 16.sp, color: greenColor),
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: 5.h),
                   Text(
                     product.description,
-                    style: TextStyle(fontSize: 14),
+                    style: TextStyle(fontSize: 14.sp),
                   ),
                 ],
               ),
@@ -71,17 +72,17 @@ class CartItem extends StatelessWidget {
                       cubit.decreaseQuantity(product);
                     }
                   },
-                  icon: Icon(Icons.remove),
+                  icon: const Icon(Icons.remove),
                 ),
                 Text(
                   '$quantity',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16.sp),
                 ),
                 IconButton(
                   onPressed: () {
                     cubit.increaseQuantity(product);
                   },
-                  icon: Icon(Icons.add),
+                  icon: const Icon(Icons.add),
                 ),
               ],
             ),

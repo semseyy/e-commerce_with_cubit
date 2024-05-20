@@ -1,3 +1,4 @@
+import 'package:ecommerce_with_cubit/product/consdant/color_consdant.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,33 +26,36 @@ class _ImageCarouselSliderState extends State<ImageCarouselSlider> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CarouselSlider.builder(
-          carouselController: _carouselController,
-          itemCount: widget.images.length,
-          itemBuilder: (context, index, realIndex) {
-            final urlImage = widget.images[index];
-            return _buildImage(urlImage);
-          },
-          options: CarouselOptions(
-            height: 200.h,
-            autoPlay: true,
-            autoPlayInterval: const Duration(seconds: 3),
-            autoPlayAnimationDuration: const Duration(milliseconds: 800),
-            onPageChanged: (index, reason) {
-              setState(() {
-                _activeIndex = index;
-              });
-              if (widget.onPageChanged != null) {
-                widget.onPageChanged!(index);
-              }
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: CarouselSlider.builder(
+            carouselController: _carouselController,
+            itemCount: widget.images.length,
+            itemBuilder: (context, index, realIndex) {
+              final urlImage = widget.images[index];
+              return _buildImage(urlImage);
             },
-            enlargeCenterPage: true,
-            viewportFraction: 0.8,
-            pageSnapping: true,
-            scrollDirection: Axis.horizontal,
+            options: CarouselOptions(
+              height: 300.h, // Yüksekliği artırıldı
+              autoPlay: true,
+              autoPlayInterval: const Duration(seconds: 3),
+              autoPlayAnimationDuration: const Duration(milliseconds: 800),
+              onPageChanged: (index, reason) {
+                setState(() {
+                  _activeIndex = index;
+                });
+                if (widget.onPageChanged != null) {
+                  widget.onPageChanged!(index);
+                }
+              },
+              enlargeCenterPage: true,
+              viewportFraction: 0.7,
+              pageSnapping: true,
+              scrollDirection: Axis.horizontal,
+            ),
           ),
         ),
-        SizedBox(height: 12.h),
+        SizedBox(height: 10.h),
         _buildIndicator(),
       ],
     );
@@ -63,30 +67,30 @@ class _ImageCarouselSliderState extends State<ImageCarouselSlider> {
         effect: ExpandingDotsEffect(
           dotHeight: 10.h,
           dotWidth: 10.w,
-          activeDotColor: Colors.teal,
+          activeDotColor: tealColor,
         ),
       );
 
   Widget _buildImage(String urlImage) => Container(
         margin: EdgeInsets.symmetric(horizontal: 5.w),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.r),
+          borderRadius: BorderRadius.circular(20.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: blackColor.withOpacity(0.4),
               spreadRadius: 2,
-              blurRadius: 5,
-              offset: const Offset(0, 3),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
             ),
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(15.r),
+          borderRadius: BorderRadius.circular(20.r),
           child: Image.network(
             urlImage,
-            width: double.infinity,
-            height: 200.h,
-            fit: BoxFit.cover,
+            width: double.infinity, // Fotoğrafın genişliği tüm alanı kaplayacak şekilde ayarlandı
+            height: 300.h, // Yükseklik belirlendi
+            fit: BoxFit.fill, // Fotoğrafın tamamının görünmesi sağlandı
           ),
         ),
       );
