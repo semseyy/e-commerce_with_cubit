@@ -1,4 +1,4 @@
-# e-commerce App https://user-images.githubusercontent.com/25181517/186150365-da1eccce-6201-487c-8649-45e9e99435fd.png
+# e-commerce App <img src="https://user-images.githubusercontent.com/25181517/186150365-da1eccce-6201-487c-8649-45e9e99435fd.png"  width="100">
 
 A simple e-commerce app created using Flutter & Dart and using API from [fakestoreapi](https://fakestoreapi.com/)
 
