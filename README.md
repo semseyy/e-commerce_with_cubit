@@ -1,4 +1,4 @@
-#e-commerce_app_with_bloc
+# e-commerce_app_with_bloc
 
 A simple weather App created using Flutter & Dart and using API from WeatherApi
 
