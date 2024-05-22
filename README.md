@@ -1,16 +1,6 @@
-# ecommerce_with_cubit
+#e-commerce_app_with_bloc
 
-A new Flutter project.
+A simple weather App created using Flutter & Dart and using API from WeatherApi
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img src="https://github.com/semseyy/e-commerce_with_cubit/assets/148747503/e2d9a76f-45f8-40d0-8b31-498dc7164144"  width="320">
