@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:ecommerce_with_cubit/product/consdant/color_consdant.dart';
 import 'package:flutter/material.dart';
@@ -29,16 +28,15 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> fetchProducts() async {
     try {
       final List<Product> products = await FakeStoreService().getProducts();
-      final List<String> productImages =
-          products.map((product) => product.imageUrl).toList().sublist(1, 4); // Sadece ilk üç ürün resmini al
-      emit(state.copyWith(
-          products: products,
-          productImages: productImages,
-          searchedProducts: products)); // Arama sonuçlarına başlangıçta tüm ürünleri ekle
+      final List<String> productImages = products.map((product) => product.imageUrl).toList().sublist(0, 3);
+      emit(state.copyWith(products: products, productImages: productImages, searchedProducts: products));
     } catch (e) {
       emit(state.copyWith(error: 'Ürünler getirilirken hata oluştu: $e'));
-      print('Ürünler getirilirken hata oluştu: $e');
     }
+  }
+
+  int getIndexForDisplay(int index) {
+    return index + 1;
   }
 
   void fetchProductsByCategory(String category) async {
@@ -47,7 +45,6 @@ class HomeCubit extends Cubit<HomeState> {
       emit(state.copyWith(products: products));
     } catch (e) {
       emit(state.copyWith(error: 'Kategoriye göre ürünler getirilirken hata oluştu: $e'));
-      print('Kategoriye göre ürünler getirilirken hata oluştu: $e');
     }
   }
 
@@ -97,24 +94,21 @@ class HomeCubit extends Cubit<HomeState> {
   void setSelectedCategoryIndex(int index) async {
     if (index >= 0 && index < state.categories.length) {
       if (index != state.selectedCategoryIndex) {
-        emit(state.copyWith(selectedCategoryIndex: index, products: []));
+        emit(state.copyWith(selectedCategoryIndex: index));
         try {
           final List<Product> products = await FakeStoreService().getProductsByCategory(state.categories[index]);
           emit(state.copyWith(products: products, searchedProducts: products));
         } catch (e) {
           emit(state.copyWith(error: 'Kategoriye göre ürünler getirilirken hata oluştu: $e'));
-          print('Kategoriye göre ürünler getirilirken hata oluştu: $e');
         }
       }
     } else {
       emit(state.copyWith(error: 'Geçersiz kategori indeksi'));
-      print('Geçersiz kategori indeksi');
     }
   }
 
   void setSelectedProduct(Product product) {
     emit(state.copyWith(selectedProduct: product, states: HomeStateEnum.completed));
-    print('selected product: ${state.selectedProduct}');
   }
 
   void setAddCart(Product product) {
@@ -195,9 +189,9 @@ class HomeCubit extends Cubit<HomeState> {
 
   void updateTotalAmount() {
     double totalAmount = 0;
-    state.cartItems.forEach((product) {
+    for (var product in state.cartItems) {
       totalAmount += (product.price ?? 0) * product.quantity;
-    });
+    }
     emit(state.copyWith(totalAmount: totalAmount));
   }
 
@@ -207,5 +201,13 @@ class HomeCubit extends Cubit<HomeState> {
 
   void hideSnackBar() {
     emit(state.copyWith(showSnackBar: false));
+  }
+
+  void clearCart() {
+    emit(state.copyWith(cartItems: []));
+    // Toplam fiyatı sıfırla
+    resetTotalAmount();
+    // Snackbar'ı gizle
+    hideSnackBar();
   }
 }

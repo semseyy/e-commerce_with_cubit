@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecommerce_with_cubit/feature/home/cubit/home_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class TotalAmountSection extends StatelessWidget {
   const TotalAmountSection({super.key});
@@ -26,7 +27,24 @@ class TotalAmountSection extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                // Ödeme yapma işlemi
+                // Alert göster
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Ödeme Tamamlandı"),
+                      content: const Text("Ödemeniz başarıyla tamamlandı!"),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text("Tamam"),
+                          onPressed: () {
+                            context.push("/home");
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: whiteColor,

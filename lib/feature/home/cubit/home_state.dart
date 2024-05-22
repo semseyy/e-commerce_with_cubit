@@ -103,9 +103,9 @@ class HomeState extends Equatable {
         iconData: Icons.favorite_border,
         selectedSize: "",
         subtitles: [
-          "Tüm ürünlerde %20 indirim",
-          "Pantolonlarda 2 alana 1 bedava",
-          "Tüm ürünlerde sepette ek %15 indirim"
+          "20% discount on all products.",
+          "Buy 2 pants, get 1 free.",
+          "Additional 15% discount in the cart for all products."
         ],
         currentSubtitleIndex: 0,
         isSelected: false,
@@ -113,7 +113,7 @@ class HomeState extends Equatable {
         categories: ["electronics", "jewelery", "men's clothing", "women's clothing"],
         products: [],
         filteredProducts: [],
-        searchedProducts: [], // Başlangıçta boş bir arama sonucu listesi
+        searchedProducts: [],
         selectedProduct: null,
         productModel: [],
         error: '',
@@ -121,7 +121,7 @@ class HomeState extends Equatable {
         couponCode: '',
         discount: 0,
         quantities: [],
-        cart: [], // Başlangıçta boş bir sepet
+        cart: [],
         productImages: [],
         cartItems: [],
         quantity: 1,

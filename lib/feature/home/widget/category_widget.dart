@@ -1,4 +1,3 @@
-import 'package:ecommerce_with_cubit/product/consdant/color_consdant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -23,6 +22,7 @@ class CategoryWidget extends StatelessWidget {
         categories.length,
         (index) => GestureDetector(
           onTap: () {
+            print('Category $index selected');
             if (onCategorySelected != null) {
               onCategorySelected!(index);
             }
@@ -30,14 +30,13 @@ class CategoryWidget extends StatelessWidget {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 8.h),
             decoration: BoxDecoration(
-              color: selectedIndex == index ? tealColor : Colors.grey[200],
+              color: selectedIndex == index ? Colors.teal : Colors.grey[200],
               borderRadius: BorderRadius.circular(16.r),
             ),
             child: Text(
               categories[index],
               style: TextStyle(
-                color: selectedIndex == index ? whiteColor : blackColor,
-                fontWeight: FontWeight.bold,
+                color: selectedIndex == index ? Colors.white : Colors.black,
               ),
             ),
           ),

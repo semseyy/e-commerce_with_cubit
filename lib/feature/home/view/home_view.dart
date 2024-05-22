@@ -23,27 +23,34 @@ class HomeView extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             CircleAvatar(
               maxRadius: 26,
               backgroundColor: navyColor,
               child: Image.asset(
                 'assets/images/Logo.png',
-                width: 35.w,
-                height: 35.h,
+                width: 35,
+                height: 35,
               ),
             ),
-            SizedBox(width: 10.w),
-            Flexible(
-              child: Text(
-                'İCEMİLLA',
-                style: GoogleFonts.pacifico(
-                  fontSize: 22.sp,
-                  color: blackColor,
-                ),
-                overflow: TextOverflow.ellipsis,
+            Text(
+              'İCEMİLLA',
+              style: GoogleFonts.pacifico(
+                fontSize: 22.sp,
+                color: blackColor,
               ),
+              overflow: TextOverflow.ellipsis,
+            ),
+            BlocBuilder<HomeCubit, HomeState>(
+              builder: (context, state) {
+                return IconButton(
+                  onPressed: () {
+                    context.push("/checkout", extra: context.read<HomeCubit>());
+                  },
+                  icon: Icon(Icons.shopping_cart, color: tealColor),
+                );
+              },
             ),
           ],
         ),
@@ -56,7 +63,7 @@ class HomeView extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
               child: TextField(
                 decoration: InputDecoration(
-                  hintText: 'Ara...',
+                  hintText: 'Search...',
                   prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(25.sp),
@@ -67,7 +74,16 @@ class HomeView extends StatelessWidget {
             SizedBox(height: 8.h),
             BlocBuilder<HomeCubit, HomeState>(
               builder: (context, state) {
-                return ImageCarouselSlider(images: state.productImages);
+                if (state.productImages.isEmpty) {
+                  return const Text("Görüntü yok");
+                } else {
+                  final List<String> adjustedImages = state.productImages.map((image) {
+                    // İndeksleri 1'den başlayacak şekilde ayarlayın
+                    return image;
+                  }).toList();
+
+                  return ImageCarouselSlider(images: adjustedImages);
+                }
               },
             ),
             SizedBox(height: 12.h),
@@ -86,6 +102,8 @@ class HomeView extends StatelessWidget {
                         } else {
                           final selectedCategory = index != -1 ? state.categories[index] : "Tüm Kategoriler";
                           context.read<HomeCubit>().fetchProductsByCategory(selectedCategory);
+                          print("Selected category: $selectedCategory");
+                          print("Selected index: $index");
                         }
                       },
                     );
